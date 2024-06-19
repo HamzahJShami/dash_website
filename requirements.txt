@@ -8,6 +8,6 @@ dash_cytoscape
 numpy==2.0.0 
 matplotlib ==3.9.0 
 scipy==1.13.1 
-sklearn==1.5.0
+scikit-learn==1.5.0
 dash_bootstrap_components==1.6.0 
 networkx==3.3.0
