@@ -1,0 +1,49 @@
+/* Belong to https://codepen.io/chriddyp/pen/bWLwgP.css
+/* Table of contents
+––––––––––––––––––––––––––––––––––––––––––––––––––
+- Added by Me
+- Plotly.js
+- Grid
+- Base Styles
+- Typography
+- Links
+- Buttons
+- Forms
+- Lists
+- Code
+- Tables
+- Spacing
+- Utilities
+- Clearing
+- Media Queries
+
+/* Added by me for dropdown styling
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.select_box {
+      
+    width: 250px;
+    
+    
+    padding: 1px;
+    font-size: 16px;
+    font-weight: bold;
+    height: 34px;
+    
+    -webkit-appearance: none;
+    background-position-x: 244px;
+}
+
+.Select-control {
+  background-color: rgb(25, 25, 25) !important;
+  color:white;
+}
+
+.Select-menu-outer {
+  background-color: rgb(25, 25, 25);
+  color: white;
+}
+
+.Select-value-label {
+  color: white !important;
+}
