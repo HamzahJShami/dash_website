@@ -91,7 +91,8 @@ server = app.server
 
 
 app.layout = [
-    html.Div(children = [html.H1(children='Data is Useful', style={'textAlign':'center','height':'20%'}, className="navbar-expand-lg bg-light border-bottom border-light border-2"),
+    html.Div(children = [html.H1(children='Network Analysis on Diabetes Indicators', 
+                                  style={'textAlign':'center','height':'20%'}, className="navbar-expand-lg bg-light "),
  #                        html.Div(children='NavBar', style={'textAlign':'center','height':'2%'}, className="nav opacity-75 border-bottom border-light border-2"),
                          ]),
     html.Div(children = [
