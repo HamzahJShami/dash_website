@@ -99,7 +99,7 @@ app = dash.Dash(__name__,
 server = app.server
 
 
-app.layout = [
+app.layout = html.Div(children=[
     dbc.Row(children = [html.H1(children='Data is Useful', 
                                 style={'textAlign':'center','height':'20%'},
                                 className="navbar-expand-lg bg-light b"),
@@ -163,7 +163,7 @@ app.layout = [
     className = 'gap-4'
    
     )
-]
+])
 @app.callback(
         Output('cytograph','elements'),
         [Input('input_graph','value')]
