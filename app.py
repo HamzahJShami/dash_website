@@ -90,8 +90,7 @@ app = dash.Dash(__name__,
 server = app.server
 
 
-app.layout = (
-    html.Div(children = [html.H1(children='Network Analysis on Diabetes Indicators', 
+app.layout = html.Div(children = [html.Div(children = [html.H1(children='Network Analysis on Diabetes Indicators', 
                                   style={'textAlign':'center','height':'20%'}, className="navbar-expand-lg bg-light "),
  #                        html.Div(children='NavBar', style={'textAlign':'center','height':'2%'}, className="nav opacity-75 border-bottom border-light border-2"),
                          ]),
@@ -136,7 +135,8 @@ app.layout = (
         html.Div(children =[html.Div(node_centrality)], style = {'width':'30%'}, className= 'm-3 text-body text-wrap',id = 'right_analytics')
         
     ],style={'display': 'flex', 'flexDirection': 'row'})
-)
+])
+
 @app.callback(
         Output('cytograph','elements'),
         [Input('input_graph','value')]
@@ -189,4 +189,4 @@ def display_mouse_over(mouseoverNodeData):
 
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=False,host = '0.0.0.0')
