@@ -64,7 +64,11 @@ cytoscape_graph = html.Div([cyto.Cytoscape(id = 'cytograph',
 
 analysis_cards = 'border-white border-3 border border rounded m-3 bg-light'
 card_style = {'textAlign':'center','height':'20%', 'width':'80%'}
-node_centrality = dcc.Markdown('''Centrality is a very important tool to measure how important a node is in a graph.
+node_centrality = dcc.Markdown('''
+                                
+                                Centrality
+                                ---
+                                Centrality is a very important tool to measure how important a node is in a graph.
                                 Here it would be how closely linked to the other diabetes indicators a indicator is.
                                 Below cards show Three different measure of centrality, with a brief explanation on how they are calculated''')
 degree_centrality = dcc.Markdown('''
@@ -83,6 +87,11 @@ eigen_centrality = dcc.Markdown('''Eigenvector Centrality measures centrality by
                                  In this example, a high betweeness shows helath indicator as an important bridge between other health indicators''')
 
 
+xs_value = 10
+sm_value = 10
+md_value = 10
+lg_value = 3
+xl_value= 3
 cyto.load_extra_layouts()
 app = dash.Dash(__name__, 
                 external_stylesheets=[dbc.themes.CYBORG]
@@ -90,12 +99,14 @@ app = dash.Dash(__name__,
 server = app.server
 
 
-app.layout = html.Div(children = [html.Div(children = [html.H1(children='Network Analysis on Diabetes Indicators', 
-                                  style={'textAlign':'center','height':'20%'}, className="navbar-expand-lg bg-light "),
+app.layout = [
+    dbc.Row(children = [html.H1(children='Data is Useful', 
+                                style={'textAlign':'center','height':'20%'},
+                                className="navbar-expand-lg bg-light b"),
  #                        html.Div(children='NavBar', style={'textAlign':'center','height':'2%'}, className="nav opacity-75 border-bottom border-light border-2"),
                          ]),
-    html.Div(children = [
-        html.Div(children = [
+    dbc.Row(children = [
+        dbc.Col(
             dcc.Markdown('''
                 Introduction
                 ---
@@ -117,9 +128,13 @@ app.layout = html.Div(children = [html.Div(children = [html.H1(children='Network
                          indicators will be present on the right hand side of the screen, alongside a brief explanation of what they mean
             
                 If you want to hire me to create visualise your beautiful data in bespoke dashboard please email: Hamzah.jas@gmail.com.        
-                         ''')], style= {'width':'30%'}, className= 'm-3 text-body'),
-                 
-                           html.Div([cytoscape_graph,
+                         '''), 
+                       # style= {'width':'30%'},
+                        class_name= 'm-3 text-body',
+                        xs=xs_value, sm=sm_value, md=md_value, lg=lg_value, xl=xl_value
+                        ),
+                
+                           dbc.Col([cytoscape_graph,
                                dcc.Dropdown(
                                options=[
                                    {'label':'Diabetes','value':2},
@@ -130,13 +145,25 @@ app.layout = html.Div(children = [html.Div(children = [html.H1(children='Network
                                    id = 'input_graph',
                                    clearable=False,
                                    )
-                           ],style={ 'height':'600px', 'width':'40%', 'display':'inline-block'}),
+                                   
+                           ],
+                           style={ 'height':'600px'},
+                           xs=xs_value, sm=sm_value, md=md_value, lg=lg_value, xl=xl_value),
+                          
                            
-        html.Div(children =[html.Div(node_centrality)], style = {'width':'30%'}, className= 'm-3 text-body text-wrap',id = 'right_analytics')
+        dbc.Col(children =[html.Div(node_centrality)], 
+                #style = {'width':'30%'}, 
+                class_name= 'm-3 text-body',
+                id = 'right_analytics',
+                xs=xs_value, sm=sm_value, md=md_value, lg=lg_value, xl=xl_value)
         
-    ],style={'display': 'flex', 'flexDirection': 'row'})
-])
-
+    ],
+    #style={'display': 'flex', 'flexDirection': 'row'},
+    justify="center",
+    className = 'gap-4'
+   
+    )
+]
 @app.callback(
         Output('cytograph','elements'),
         [Input('input_graph','value')]
@@ -186,7 +213,5 @@ def display_mouse_over(mouseoverNodeData):
                                                     target="betweenness_tooltip"),
                                             str(mouseoverNodeData['betweenness'])])],
                     className= analysis_cards ,style=card_style)]
-
-
 if __name__ == "__main__":
     app.run(debug=False,host = '0.0.0.0')
