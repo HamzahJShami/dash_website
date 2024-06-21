@@ -13,12 +13,16 @@ import dash_bootstrap_components as dbc
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from graph_functions import Data_pre_processing, nodes_making, edge_making, create_graph, create_analysis,cytograph
 
-diabete_filter_data = Data_pre_processing(2)
-nodes = nodes_making(diabete_filter_data)
-edge_dataframe = edge_making(diabete_filter_data)
-G = create_graph(nodes,edge_dataframe)
+#diabete_filter_data = Data_pre_processing(2)
+#nodes = nodes_making(diabete_filter_data)
+#edge_dataframe = edge_making(diabete_filter_data)
+#nodes.to_csv('Data/nodes_list.csv',sep=',',index=False)
+#edge_dataframe.to_csv('Data/edge_list.csv',sep=',',index=False)
+nodes_list = pd.read_csv('Data/nodes_list.csv',low_memory=True)
+edge_list = pd.read_csv('Data/edge_list.csv',low_memory=True)
+G = create_graph(nodes_list,edge_list)
 analysis_data = create_analysis(G)
-elements = cytograph(nodes, edge_dataframe,G,analysis_data)
+elements = cytograph(nodes_list, edge_list,G,analysis_data)
 
 default_stylesheet = [
     {
@@ -68,9 +72,10 @@ node_centrality = dcc.Markdown('''
                                 
                                 Centrality
                                 ---
-                                Centrality is a very important tool to measure how important a node is in a graph.
-                                Here it would be how closely linked to the other diabetes indicators a indicator is.
-                                Below cards show Three different measure of centrality, with a brief explanation on how they are calculated''')
+                                Centrality is a way to qauntify a nodes position within a graph. A higher score generaly means the node
+                                is more well connected, and thus holds a more 'central' position. Below cards show Three different measure 
+                                of centrality. These measures have a strong relationship with each other, especially in simple graphs like this,
+                                however in more complex graphs slight differences can tell us nuanced difference between nodes. ''')
 degree_centrality = dcc.Markdown('''
                                  Degree calculation of centrality the sum of the number of edges connected to the node. 
                                  This is a simple calculation that can be used to identify the most well connected node. 
@@ -81,6 +86,7 @@ between_centrality = dcc.Markdown('''
                                  appears in the shortes path between all pairs of nodes in a grpah. The shortest path between a two nodes, 
                                  is the minimum numbers of nodes a path has to go through before you reach the second node.
                                  In this example, a high betweeness shows helath indicator as an important bridge between other health indicators''')
+
 eigen_centrality = dcc.Markdown('''Eigenvector Centrality measures centrality by summing the amount of times a node connects to other important nodes.
                                  The shortest path between a two nodes, 
                                  is the minimum numbers of nodes a path has to go through before you reach the second node.
