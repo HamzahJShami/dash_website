@@ -13,16 +13,16 @@ import dash_bootstrap_components as dbc
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from graph_functions import Data_pre_processing, nodes_making, edge_making, create_graph, create_analysis,cytograph
 
-#diabete_filter_data = Data_pre_processing(2)
-#nodes = nodes_making(diabete_filter_data)
-#edge_dataframe = edge_making(diabete_filter_data)
+diabete_filter_data = Data_pre_processing(2)
+nodes = nodes_making(diabete_filter_data)
+edge_dataframe = edge_making(diabete_filter_data)
 #nodes.to_csv('Data/nodes_list.csv',sep=',',index=False)
 #edge_dataframe.to_csv('Data/edge_list.csv',sep=',',index=False)
-nodes_list = pd.read_csv('Data/nodes_list.csv',low_memory=True)
-edge_list = pd.read_csv('Data/edge_list.csv',low_memory=True)
-G = create_graph(nodes_list,edge_list)
+#nodes_list = pd.read_csv('Data/nodes_list.csv',low_memory=True)
+#edge_list = pd.read_csv('Data/edge_list.csv',low_memory=True)
+G = create_graph(nodes,edge_dataframe)
 analysis_data = create_analysis(G)
-elements = cytograph(nodes_list, edge_list,G,analysis_data)
+elements = cytograph(nodes, edge_dataframe,G,analysis_data)
 
 default_stylesheet = [
     {
@@ -68,6 +68,8 @@ cytoscape_graph = html.Div([cyto.Cytoscape(id = 'cytograph',
 
 analysis_cards = 'border-white border-3 border border rounded m-3 bg-light'
 card_style = {'textAlign':'center','height':'20%', 'width':'80%'}
+
+#tool tip text for the graph analysis cards
 node_centrality = dcc.Markdown('''
                                 
                                 Centrality
@@ -92,7 +94,17 @@ eigen_centrality = dcc.Markdown('''Eigenvector Centrality measures centrality by
                                  is the minimum numbers of nodes a path has to go through before you reach the second node.
                                  In this example, a high betweeness shows helath indicator as an important bridge between other health indicators''')
 
+graph_description = dcc.Markdown('''
+                        To that end the Graph in the center of the screen represents the relationship between a few of the metrics within the dataset. 
+                        The nodes represents the indicator, the edge (or line) between the nodes represents the strength of correlation, calculated 
+                        with the Pearson correlation coefficient. Some indicators are removed if their correlation with the other indicators fall
+                        below a certain threshold (here I use 0.1.) The closer the nodes are too each other the strong the relationship. 
+                
+                        The graph can be toggled to show the relationship based on the different diabetic states of the individuals in the dataset. 
+                        Those with Diabetes, Pre-Diabetes condition or with no diabetes. If you hover over a node a series of graph analysis 
+                        indicators will be present on the right hand side of the screen, alongside a brief explanation of what they mean''')
 
+#set values so the app knows how to adjust for diffrent screen sizes
 xs_value = 10
 sm_value = 10
 md_value = 10
@@ -112,29 +124,35 @@ app.layout = html.Div(children=[
  #                        html.Div(children='NavBar', style={'textAlign':'center','height':'2%'}, className="nav opacity-75 border-bottom border-light border-2"),
                          ]),
     dbc.Row(children = [
-        dbc.Col(
+        dbc.Col(html.Div(children = [
             dcc.Markdown('''
                 Introduction
                 ---
-                This dashboard is a portfolio project built by Hamzah Shami. I used a combination of Ploty's Dash,
-                          Networkx, Dash Bootstrap Components, with help from the lovely people suppling the health science 
+                This dashboard is a portfolio project built by [Hamzah Shami](https://github.com/HamzahJShami) . I used a combination of Ploty's Dash,
+                Networkx, Dash Bootstrap Components, with help from the lovely people suppling the health science 
                 and analytics course from University of Exeter. 
                 
                 My aim for the dashboard is to take the Diabetes Health Indicator set from Kaggle and have fun with it. 
-                         I want to show off some data analysis and visualization with Networkx, hopefully providing a interesting insight or, at least, 
-                         a new perspective on an old data set. 
+                I want to show off some data analysis and visualization with Networkx, hopefully providing a interesting insight or, at least, 
+                a new perspective on an old data set.'''
+                         ), 
+             html.Span('Graph Description',
+                    id='graph_tooltip',
+                    style={"textDecoration": "underline", "cursor": "pointer"}
+                    ),
+            dbc.Tooltip(
+                    graph_description,
+                    target="graph_tooltip",
+                    style={'maxWidth':600,'width':600}
+                    ), 
+            html.Br(),
   
-                To that end the Graph in the center of the screen represents the relationship between a few of the metrics within the dataset. 
-                         The nodes represents the indicator, the edge (or line) between the nodes represents the strength of correlation, calculated 
-                         with the Pearson correlation coefficient. Some indicators are removed if their correlation with the other indicators fall
-                          below a certain threshold (here I use 0.1.) The closer the nodes are too each other the strong the relationship. 
-                
-                The graph can be toggled to show the relationship based on the different diabetic states of the individuals in the dataset. 
-                         Those with Diabetes, Pre-Diabetes condition or with no diabetes. If you hover over a node a series of graph analysis 
-                         indicators will be present on the right hand side of the screen, alongside a brief explanation of what they mean
+
             
-                If you want to hire me to create visualise your beautiful data in bespoke dashboard please email: Hamzah.jas@gmail.com.        
-                         '''), 
+            dcc.Markdown('''
+                    
+                         If you want to hire me to create visualise your beautiful data in bespoke dashboard please email: Hamzah.jas@gmail.com.        
+                    ''')]), 
                        # style= {'width':'30%'},
                         class_name= 'm-3 text-body',
                         xs=xs_value, sm=sm_value, md=md_value, lg=lg_value, xl=xl_value
